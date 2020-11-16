@@ -1,7 +1,12 @@
-const { Command } = require('discord-akairo');
-const L = require('../logger');
+// const { Command } = require('discord-akairo');
+// const L = require('../logger');
 
-class ClearQueueCommand extends Command {
+import Command from "../structures/BaseCommand";
+import { Message, User, Guild } from "discord.js";
+import { Collection } from 'discord.js';
+import log from "../logger";
+
+export default class ClearQueueCommand extends Command {
 	constructor() {
 		super('setqueue', {
 			aliases: ['setqueue'],
@@ -20,7 +25,7 @@ class ClearQueueCommand extends Command {
 			]
 		});
 	}
-	async exec(msg, args) {
+	async exec(msg: Message, args: {guild: Guild, users: Collection<string, User>}) {
 		if (args.guild) {
 			await this.client.settings.set(args.guild.id, 'queue', args.users.map(user => user.id).join(','));
 			await msg.react('✔');
@@ -29,4 +34,4 @@ class ClearQueueCommand extends Command {
 	}
 }
 
-module.exports = ClearQueueCommand;
+// module.exports = ClearQueueCommand;

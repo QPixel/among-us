@@ -1,9 +1,14 @@
-const { Command } = require('discord-akairo');
-const L = require('../logger');
-const { VoiceChannel } = require('discord.js');
-const { ApiClient } = require('twitch');
+// const { Command } = require('discord-akairo');
+// const L = require('../logger');
+// const { VoiceChannel } = require('discord.js');
+// const { ApiClient } = require('twitch');
+// import * as L from "../logger";
+import Command from '../structures/BaseCommand';
+import log from "../logger";
+import { VoiceChannel, Message,GuildChannel } from 'discord.js';
+import { ApiClient } from 'twitch';
 
-class CloutCommand extends Command {
+export default class CloutCommand extends Command {
 	constructor() {
 		super('clout', {
 			aliases: ['clout'],
@@ -12,14 +17,14 @@ class CloutCommand extends Command {
 				{
 					id: 'channel',
 					type: 'voiceChannel',
-					default: msg => msg.member.voice.channel,
+					default: (msg: Message) => msg.member.voice.channel,
 					match: "content",
 				}
 			]
 		});
 	}
 
-	async exec(msg, args) {
+	async exec(msg: Message, args: {channel: VoiceChannel}) {
 		const message = await msg.channel.send('Calculating clout...');
 		if (args.channel) {
 			return message.edit(`**Viewers in ${args.channel.name}:** ${await getViewersOfChannel(args.channel, this.client.twitch)}`);
@@ -38,7 +43,7 @@ class CloutCommand extends Command {
  * @param {VoiceChannel} channel
  * @param {ApiClient} twitch
  */
-async function getViewersOfChannel(channel, twitch) {
+async function getViewersOfChannel(channel: GuildChannel, twitch: ApiClient) {
 	let totalViewers = 0;
 	for (const member of channel.members.values()) {
 		const twitchUrl = member.presence.activities.find(a => a.name === 'Twitch')
@@ -55,5 +60,3 @@ async function getViewersOfChannel(channel, twitch) {
 	}
 	return totalViewers;
 }
-
-module.exports = CloutCommand;

@@ -1,15 +1,18 @@
-const { Command } = require('discord-akairo');
-const { MessageEmbed } = require('discord.js');
-const L = require('../logger');
-
-class HelpCommand extends Command {
+// const { Command } = require('discord-akairo');
+// const { MessageEmbed } = require('discord.js');
+// const L = require('../logger');
+import Command from "../structures/BaseCommand";
+import {MessageEmbed, Message} from "discord.js";
+// import * as L from "logger";
+import log from "../logger";
+export default class HelpCommand extends Command {
 	constructor() {
 		super('help', {
 			aliases: ['help']
 		});
 	}
 
-	async exec(msg) {
+	async exec(msg: Message) {
 		msg.channel.send(new MessageEmbed()
 			.setTitle('How To Use the Among Us Bot')
 			.setDescription('*The bot will automatically set its nickname and the name of the voice channel to match the latest four-letter code sent.*')
@@ -24,5 +27,3 @@ class HelpCommand extends Command {
 		);
 	}
 }
-
-module.exports = HelpCommand;

@@ -1,22 +1,27 @@
-const { Command } = require('discord-akairo');
-const L = require('../logger');
-const { inspect } = require('util');
+// const { Command } = require('discord-akairo');
+// const L = require('../logger');
+// const { inspect } = require('util');
+import Command from "../structures/BaseCommand";
+// import * as L from "logger";
+import log from "../logger";
+import { inspect } from "util";
+import { Message } from 'discord.js';
 
-const clean = text => {
+const clean = (text: unknown) => {
 	if (typeof (text) === "string")
 		return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
 	else
 		return text;
 }
 
-class EvalCommand extends Command {
+export default class EvalCommand extends Command {
 	constructor() {
 		super('eval', {
 			aliases: ['eval'],
 			ownerOnly: true,
 		});
 	}
-	async exec(msg) {
+	async exec(msg: Message) {
 		const args = msg.content.split(" ").slice(1);
 
 		try {
@@ -33,4 +38,4 @@ class EvalCommand extends Command {
 	}
 }
 
-module.exports = EvalCommand;
+// module.exports = EvalCommand;

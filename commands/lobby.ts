@@ -1,8 +1,13 @@
-const { Command } = require('discord-akairo');
-const L = require('../logger');
-const { VoiceChannel } = require('discord.js');
+// const { Command } = require('discord-akairo');
+// const L = require('../logger');
+// const { VoiceChannel } = require('discord.js');
 
-class LobbyCommand extends Command {
+import Command from "../structures/BaseCommand";
+// import * as L from "logger";
+import log from "../logger"
+import { VoiceChannel, Message} from "discord.js";
+
+export default class LobbyCommand extends Command {
 	constructor() {
 		super('lobby', {
 			aliases: ['lobby'],
@@ -11,14 +16,14 @@ class LobbyCommand extends Command {
 				{
 					id: 'channel',
 					type: 'voiceChannel',
-					default: msg => msg.member.voice.channel,
+					default: (msg: Message) => msg.member.voice.channel,
 					match: "content",
 				}
 			]
 		});
 	}
 
-	async exec(msg, args) {
+	async exec(msg: Message, args: { channel: VoiceChannel }) {
 		if (args.channel) {
 			return msg.channel.send(`**Squad List for ${args.channel.name}:**\n${args.channel.members.map(m => m.displayName).join(', ')}`);
 		} else {
@@ -33,4 +38,4 @@ class LobbyCommand extends Command {
 	}
 }
 
-module.exports = LobbyCommand;
+// module.exports = LobbyCommand;

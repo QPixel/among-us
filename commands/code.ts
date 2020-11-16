@@ -1,9 +1,14 @@
-const { Command } = require('discord-akairo');
-const L = require('../logger');
+// const { Command } = require('discord-akairo');
+// const L = require('../logger');
+import Command from "../structures/BaseCommand";
+// import * as L from "../logger";
+import log from "../logger";
+import { Message } from 'discord.js';
+
 
 const blacklistedWords = new Set(['NICE', 'OKAY', 'STFU', 'WHOA', 'GUYS', 'LMAO', 'ROFL', 'FUCK', 'BRUH', 'SHIT', 'WHAT', 'LULW', 'KEKW', 'LOLW', 'DUDE', 'HAHA', 'AHAH', 'LMOA', 'JOIN', 'COME']);
 
-class CodeCommand extends Command {
+export default class CodeCommand extends Command {
 	constructor() {
 		super('code', {
 			regex: /^[A-Z]{6}$/,
@@ -12,7 +17,7 @@ class CodeCommand extends Command {
 		});
 	}
 
-	async exec(msg) {
+	async exec(msg: Message) {
 		if (!blacklistedWords.has(msg.content)) {
 			try {
 				await msg.react('👀');
@@ -36,9 +41,7 @@ class CodeCommand extends Command {
 			}
 			maxChannel.edit({ name: `Voice | ${msg.content}` });
 			msg.guild.me.edit({ nick: `${msg.content} | ${this.client.user.username}` });
-			L.log(`Updated code to ${msg.content}`);
+			log(`Updated code to ${msg.content}`);
 		}
 	}
 }
-
-module.exports = CodeCommand;
